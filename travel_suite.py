@@ -4,7 +4,7 @@ import numpy as np
 from scipy.stats import norm
 from PIL import Image
 
-class LatentTravel:
+class LatentTravel_Zho:
     """Travel between two latent vectors"""
 
     @classmethod
@@ -13,27 +13,27 @@ class LatentTravel:
             "required": {
                 "A": ("LATENT",),
                 "B": ("LATENT",),
+                "vae": ("VAE",),
                 "steps": ("INT", {"default": 5, "min": 3, "max": 10000, "step": 1}),
                 "factor": ("FLOAT", {"default": 0.5}),
                 "blend_mode": ( ["lerp", "slerp", "add", "multiply", "divide", "subtract", "overlay", "hard_light",
                            "soft_light", "screen", "linear_dodge", "difference", "exclusion", "random"],),
                 "travel_mode": ( ['linear', 'hinge', 'circle', 'norm', 'quadratic', 'cubic', 'quartic', 'geometric'],),
-                "reflect_travel": ("BOOL", {"default": True}),
-                "vae": ("VAE",),
-                "output_images": ("BOOL", {"default": False}),
+                "reflect_travel": ("BOOLEAN", {"default": False}),
+                "output_images": ("BOOLEAN", {"default": False}),
+                "save_images": ("BOOLEAN", {"default": False}),
                 "filepath": ("STRING", {"default": "output/travel"}),
-                "prefix": ("STRING", {"default": "travel"}),
-                "write_images": ("BOOL", {"default": False}),
+                "filename_prefix": ("STRING", {"default": "travel"}),
             }
         }
 
     RETURN_TYPES = ("LATENT", "IMAGE", "STRING")
     RETURN_NAMES = ("LATENTS", "IMAGES", "FILEPATHS")
     FUNCTION = "latent_travel"
-    CATEGORY = "travel/latent"
+    CATEGORY = "Zho模块组/travel"
 
-    def latent_travel(self, A, B, steps, factor, vae, blend_mode, travel_mode, reflect_travel,
-                      filepath, prefix, write_images, output_images):
+    def latent_travel(self, A, B, vae, steps, factor, blend_mode, travel_mode, reflect_travel,
+                      output_images, save_images, filepath, filename_prefix):
 
         out_paths = []
         out_images = []
@@ -49,11 +49,11 @@ class LatentTravel:
         if output_images:
             out_images = vae.decode(out_latents)
 
-        if write_images:
+        if save_images:
             print(f'Writing latent travel images to: {filepath}')
             os.makedirs(filepath, exist_ok=True)
             for index, img in enumerate(out_images):
-                out_paths.append(self.save_image(img, filepath, prefix, index))
+                out_paths.append(self.save_image(img, filepath, filename_prefix, index))
 
         return ({'samples': out_latents}, out_images, out_paths)
 
@@ -131,11 +131,11 @@ class LatentTravel:
 
         return out
 
-    def save_image(self, tensor, filepath, prefix, index):
+    def save_image(self, tensor, filepath, filename_prefix, index):
 
         image = tensor2pil(tensor)
 
-        filename = f'{prefix}_{index:05}.png'
+        filename = f'{filename_prefix}_{index:05}.png'
         output_path = os.path.join(filepath, filename)
         image.save(output_path)
         return output_path
@@ -297,145 +297,9 @@ def random_noise(A, B, factor):
 
 
 NODE_CLASS_MAPPINGS = {
-    "LatentTravel": LatentTravel,
+    "LatentTravel_Zho": LatentTravel_Zho,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "LatentTravel": "Latent Travel",
+    "LatentTravel_Zho": "Latent Travel_Zho",
 }
-
-# class BilateralFilter:
-#     @classmethod
-#     def INPUT_TYPES(s):
-#         return {"required": {"images": ("IMAGE", ),
-#                              "kernel_size": ("INT", {"default": 3, "min": 1, "max": 20, "step": 1}),
-#                              "sigma_color": ("FLOAT", {"default": 0.25, "min": 0.0, "max": 10.0, "step": 0.01}),
-#                              "sigma_space": ("FLOAT", {"default": 1.25, "min": 0.0, "max": 10.0, "step": 0.01}),
-#                              }}
-#     RETURN_TYPES = ("IMAGE",)
-#     FUNCTION = "bilateral_filter"
-#
-#     CATEGORY = "ImageProcessing"
-#
-#     def bilateral_filter(self, images, kernel_size, sigma_color, sigma_space):
-#         images = images.movedim(-1, 1).cpu()
-#         images_transformed = bilateral_blur(images, (kernel_size, kernel_size), sigma_color, (sigma_space, sigma_space), color_distance_type="l2")
-#         images_transformed = images_transformed.movedim(1, -1)
-#
-#         return (images_transformed,)
-#
-#
-# class UnsharpMask:
-#     @classmethod
-#     def INPUT_TYPES(s):
-#         return {"required": {"images": ("IMAGE", ),
-#                              "kernel_size": ("INT", {"default": 3, "min": 1, "max": 20, "step": 1}),
-#                              "sigma": ("FLOAT", {"default": 1.25, "min": 0.0, "max": 10.0, "step": 0.01}),
-#                              }}
-#     RETURN_TYPES = ("IMAGE",)
-#     FUNCTION = "sharpen"
-#
-#     CATEGORY = "ImageProcessing"
-#
-#     def sharpen(self, images, kernel_size, sigma):
-#         images = images.movedim(-1, 1).cpu()
-#         images_transformed = unsharp_mask(images, (kernel_size, kernel_size), (sigma, sigma))
-#         images_transformed = images_transformed.movedim(1, -1)
-#
-#         return (images_transformed,)
-#
-#
-# class Hue:
-#     @classmethod
-#     def INPUT_TYPES(s):
-#         return {"required": {"images": ("IMAGE", ),
-#                              "factor": ("FLOAT", {"default": 0.0, "min": -3.141516, "max": 3.141516, "step": 0.001}),
-#                              }}
-#     RETURN_TYPES = ("IMAGE",)
-#     FUNCTION = "hue"
-#
-#     CATEGORY = "ImageProcessing"
-#
-#     def hue(self, images, factor):
-#         images = images.movedim(-1, 1).cpu()
-#         images_transformed = adjust_hue(images, factor)
-#         images_transformed = images_transformed.movedim(1, -1)
-#
-#         return (images_transformed,)
-#
-#
-# class Saturation:
-#     @classmethod
-#     def INPUT_TYPES(s):
-#         return {"required": {"images": ("IMAGE", ),
-#                              "factor": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.01}),
-#                              }}
-#     RETURN_TYPES = ("IMAGE",)
-#     FUNCTION = "saturation"
-#
-#     CATEGORY = "ImageProcessing"
-#
-#     def saturation(self, images, factor):
-#         images = images.movedim(-1, 1).cpu()
-#         images_transformed = adjust_saturation(images, factor)
-#         images_transformed = images_transformed.movedim(1, -1)
-#
-#         return (images_transformed,)
-#
-#
-# class Brightness:
-#     @classmethod
-#     def INPUT_TYPES(s):
-#         return {"required": {"images": ("IMAGE", ),
-#                              "factor": ("FLOAT", {"default": 0.0, "min": 0.0, "max": 1.0, "step": 0.01}),
-#                              }}
-#     RETURN_TYPES = ("IMAGE",)
-#     FUNCTION = "brightness"
-#
-#     CATEGORY = "ImageProcessing"
-#
-#     def brightness(self, images, factor):
-#         images = images.movedim(-1, 1).cpu()
-#         images_transformed = adjust_brightness(images, factor)
-#         images_transformed = images_transformed.movedim(1, -1)
-#
-#         return (images_transformed,)
-#
-#
-# class Gamma:
-#     @classmethod
-#     def INPUT_TYPES(s):
-#         return {"required": {"images": ("IMAGE", ),
-#                              "gamma_value": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.01}),
-#                              }}
-#     RETURN_TYPES = ("IMAGE",)
-#     FUNCTION = "gamma"
-#
-#     CATEGORY = "ImageProcessing"
-#
-#     def gamma(self, images, gamma_value):
-#         images = images.movedim(-1, 1).cpu()
-#         images_transformed = adjust_gamma(images, gamma_value)
-#         images_transformed = images_transformed.movedim(1, -1)
-#
-#         return (images_transformed,)
-#
-#
-# class SigmoidCorrection:
-#     @classmethod
-#     def INPUT_TYPES(s):
-#         return {"required": {"images": ("IMAGE", ),
-#                              "cutoff": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1.0, "step": 0.01}),
-#                              "gain": ("FLOAT", {"default": 5.0, "min": 1.0, "max": 10.0, "step": 0.01}),
-#                              }}
-#     RETURN_TYPES = ("IMAGE",)
-#     FUNCTION = "sigmoid"
-#
-#     CATEGORY = "ImageProcessing"
-#
-#     def sigmoid(self, images, cutoff, gain):
-#         images = images.movedim(-1, 1).cpu()
-#         images_transformed = adjust_sigmoid(images, cutoff, gain)
-#         images_transformed = images_transformed.movedim(1, -1)
-#
-#         return (images_transformed,)
