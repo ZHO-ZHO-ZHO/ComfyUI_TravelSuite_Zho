@@ -1,5 +1,13 @@
 # ComfyUI_TravelSuite_Zho
 
+Differences from original branch：
+- Change BOOL to BOOLEAN (for "reflect_travel", "output_images" and "save_images")
+- Change some names:
+  - "write_images" to "save_images"
+  - "prefix" to "filename_prefix"
+
+
+(修改为boolean模式 + 修改参数位置和名称)
 
 
 ## LatentTravel Node
@@ -23,7 +31,7 @@ ___**Node Inputs**___
 - **output_images**: whether to output images.  Requires VAE input.
 - **save_images**: whether to save output images.  Requires VAE input.
 - **filepath**: String for defining the output path for the files. Default path is 'output/travel'.
-- **prefix**: String for prefixing the generated files. By default, this is 'travel'. 
+- **filename_prefix**: String for prefixing the generated files. By default, this is 'travel'. 
 
 ___**Node Outputs**___
 
