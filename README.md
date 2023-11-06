@@ -1,6 +1,22 @@
-# ComfyUI_TravelSuite_Zho
+[Latent_travel_compare2composite_workflow【Zho】.json](https://github.com/ZHO-ZHO-ZHO/ComfyUI_TravelSuite_Zho/files/13271090/Latent_travel_compare2composite_workflow.Zho.json)# ComfyUI_TravelSuite_Zho
 
-Differences from original branch：
+--------
+## LatentTravel Node
+
+Travel between different latent spaces using a range of blend and travel modes.
+
+### How to use：
+![9b2a5aa4875c678c95da6ffd80fb5512](https://github.com/ZHO-ZHO-ZHO/ComfyUI_TravelSuite_Zho/assets/140084057/829b7730-4579-4575-8f3a-f873062a58b0)
+
+workflow：[Latent_travel_workflow【Zho】.json](https://github.com/ZHO-ZHO-ZHO/ComfyUI_TravelSuite_Zho/files/13271012/Latent_travel_workflow.Zho.json)
+
+
+### Compare to conditioning average and latent composite：
+![image](https://github.com/ZHO-ZHO-ZHO/ComfyUI_TravelSuite_Zho/assets/140084057/6ca11fbb-a5b0-41e0-8f1a-d6edd990239a)
+
+workflow：
+
+### Differences from original branch：
 - Change BOOL to BOOLEAN (for "reflect_travel", "output_images" and "save_images")
 - Change some names:
   - "write_images" to "save_images"
@@ -10,9 +26,11 @@ Differences from original branch：
 (修改为boolean模式 + 修改参数位置和名称)
 
 
-## LatentTravel Node
+--------
+## Node：
 
-Travel between different latent spaces using a range of blend and travel modes.
+![image](https://github.com/ZHO-ZHO-ZHO/ComfyUI_TravelSuite_Zho/assets/140084057/933f7e88-65c6-4a19-b9f6-7f220e4a5bbd)
+
 
 ___**Node Inputs**___
 - **A, B**: Latent variables needed for the process.
