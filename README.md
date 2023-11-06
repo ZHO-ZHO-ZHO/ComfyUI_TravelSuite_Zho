@@ -1,6 +1,6 @@
-# ComfyUI_TravelSuite
+# ComfyUI_TravelSuite_Zho
 
-ComfyUI custom nodes to apply various latent travel techniques.
+
 
 ## LatentTravel Node
 
@@ -31,5 +31,3 @@ ___**Node Outputs**___
 - **IMAGES**: Tensor images, if `output_images=True`. Requires VAE.
 - **FILEPATHS**: List of filepaths produced if `write_images=True`.
 
-
-`[Workflow Image](workflow.png)`
