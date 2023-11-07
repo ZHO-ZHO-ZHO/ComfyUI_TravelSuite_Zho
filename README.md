@@ -10,11 +10,14 @@ Travel between different latent spaces using a range of blend and travel modes.
 
 workflow：[Latent_travel_workflow【Zho】.json](https://github.com/ZHO-ZHO-ZHO/ComfyUI_TravelSuite_Zho/files/13271012/Latent_travel_workflow.Zho.json)
 
+note：need [CoInput](https://github.com/ZHO-ZHO-ZHO/ComfyUI-Selector-CoInput-Multilingual)
 
 ### 2）Compare to Conditioning average & Latent composite：
 ![image](https://github.com/ZHO-ZHO-ZHO/ComfyUI_TravelSuite_Zho/assets/140084057/6ca11fbb-a5b0-41e0-8f1a-d6edd990239a)
 
 workflow：[Latent_travel_compare2composite_workflow【Zho】.json](https://github.com/ZHO-ZHO-ZHO/ComfyUI_TravelSuite_Zho/files/13271090/Latent_travel_compare2composite_workflow.Zho.json)
+
+note：need [CoInput](https://github.com/ZHO-ZHO-ZHO/ComfyUI-Selector-CoInput-Multilingual)
 
 ### 3）Differences from original branch：
 - Change BOOL to BOOLEAN (for "reflect_travel", "output_images" and "save_images")
